@@ -1,0 +1,4 @@
+SoccerPitch.h: public: should be private
+SoccerPitch.cpp: ctor: ParamLoader* p = ParamLoader::Instance(); ??
+
+TODO: report error: SoccerTeam.cpp: Currentstate() does not exist!
