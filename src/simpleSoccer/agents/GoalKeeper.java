@@ -19,7 +19,7 @@ public class GoalKeeper extends PlayerBase {
     //TODO move up
     private StateMachine<GoalKeeper> stateMachine;
     //this vector is updated to point towards the ball and is used when
-    //rendering the goalkeeper (instead of the underlaying vehicle's heading)
+    //rendering the goalkeeper (instead of the underlying vehicle's heading)
     //to ensure he always appears to be watching the ball
     private Vector2D lookAt = new Vector2D();
 
@@ -130,15 +130,15 @@ public class GoalKeeper extends PlayerBase {
      *         consider intercepting
      */
     public boolean ballWithinRangeForIntercept() {
-        return (Vec2DDistanceSq(team().homeGoal().Center(), ball().pos())
+        return (Vec2DDistanceSq(team().homeGoal().center(), ball().pos())
                 <= Prm.GoalKeeperInterceptRangeSq);
     }
 
     /**
      * @return true if the keeper has ventured too far away from the goalmouth
      */
-    public boolean TooFarFromGoalMouth() {
-        return (Vec2DDistanceSq(pos(), GetRearInterposeTarget())
+    public boolean tooFarFromGoalMouth() {
+        return (Vec2DDistanceSq(pos(), getRearInterposeTarget())
                 > Prm.GoalKeeperInterceptRangeSq);
     }
 
@@ -149,27 +149,25 @@ public class GoalKeeper extends PlayerBase {
      * the specific point at the goal line that the keeper is trying to cover
      * is flexible and can move depending on where the ball is on the field.
      * To achieve this we just scale the ball's y value by the ratio of the
-     * goal width to playingfield width
+     * goal width to pitch width
      */
-    public Vector2D GetRearInterposeTarget() {
-        double xPosTarget = team().homeGoal().Center().x;
+    public Vector2D getRearInterposeTarget() {
+        double x = team().homeGoal().center().x;
+        double y = pitch().playingArea().center().y - Prm.GoalWidth * 0.5
+                + (ball().pos().y * Prm.GoalWidth) / pitch().playingArea().height();
 
-        double yPosTarget = pitch().playingArea().Center().y
-                - Prm.GoalWidth * 0.5 + (ball().pos().y * Prm.GoalWidth)
-                / pitch().playingArea().Height();
-
-        return new Vector2D(xPosTarget, yPosTarget);
+        return new Vector2D(x, y);
     }
 
-    public StateMachine<GoalKeeper> GetFSM() {
+    public StateMachine<GoalKeeper> getFSM() {
         return stateMachine;
     }
 
-    public Vector2D LookAt() {
+    public Vector2D lookAt() {
         return new Vector2D(lookAt);
     }
 
-    public void SetLookAt(Vector2D v) {
+    public void setLookAt(Vector2D v) {
         lookAt = new Vector2D(v);
     }
 }

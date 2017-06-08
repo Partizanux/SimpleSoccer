@@ -14,12 +14,12 @@ public enum ReturnHome implements State<GoalKeeper> {
 
     @Override
     public void execute(GoalKeeper keeper) {
-        keeper.steering().setTarget(keeper.homeRegion().Center());
+        keeper.steering().setTarget(keeper.homeRegion().center());
 
         //if close enough to home or the opponents get control over the ball,
         //change state to tend goal
         if (keeper.inHomeRegion() || !keeper.team().inControl()) {
-            keeper.GetFSM().ChangeState(TendGoal.INSTANCE);
+            keeper.getFSM().ChangeState(TendGoal.INSTANCE);
         }
     }
 

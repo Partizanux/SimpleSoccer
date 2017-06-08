@@ -271,12 +271,12 @@ public class SoccerTeam {
         while (NumAttempts-- > 0) {
             //choose a random position along the opponent's goal mouth. (making
             //sure the ball's radius is taken into account)
-            shotTarget.set(opponentsGoal().Center());
+            shotTarget.set(opponentsGoal().center());
 
             //the y value of the shot position should lay somewhere between two
             //goalposts (taking into consideration the ball diameter)
-            int MinYVal = (int) (opponentsGoal().LeftPost().y + pitch().ball().getBRadius());
-            int MaxYVal = (int) (opponentsGoal().RightPost().y - pitch().ball().getBRadius());
+            int MinYVal = (int) (opponentsGoal().leftPost().y + pitch().ball().getBRadius());
+            int MaxYVal = (int) (opponentsGoal().rightPost().y - pitch().ball().getBRadius());
 
             shotTarget.y = (double) randInt(MinYVal, MaxYVal);
 
@@ -327,7 +327,7 @@ public class SoccerTeam {
                 if (getBestPassToReceiver(passer, curPlyr, Target, power)) {
                     //if the pass target is the closest to the opponent's goal line found
                     // so far, keep a record of it
-                    double Dist2Goal = abs(Target.x - opponentsGoal().Center().x);
+                    double Dist2Goal = abs(Target.x - opponentsGoal().center().x);
 
                     if (Dist2Goal < ClosestToGoalSoFar) {
                         ClosestToGoalSoFar = Dist2Goal;
@@ -403,10 +403,10 @@ public class SoccerTeam {
         boolean bResult = false;
 
         for (int pass = 0; pass < NumPassesToTry; ++pass) {
-            double dist = abs(Passes[pass].x - opponentsGoal().Center().x);
+            double dist = abs(Passes[pass].x - opponentsGoal().center().x);
 
             if ((dist < ClosestSoFar)
-                    && pitch().playingArea().Inside(Passes[pass])
+                    && pitch().playingArea().inside(Passes[pass])
                     && isPassSafeFromAllOpponents(pitch().ball().pos(),
                     Passes[pass],
                     receiver,
@@ -685,7 +685,7 @@ public class SoccerTeam {
 
                 if (plyr.getFSM().inState(Wait.INSTANCE)
                         || plyr.getFSM().inState(ReturnToHomeRegion.INSTANCE)) {
-                    plyr.steering().setTarget(plyr.homeRegion().Center());
+                    plyr.steering().setTarget(plyr.homeRegion().center());
                 }
             }
         }

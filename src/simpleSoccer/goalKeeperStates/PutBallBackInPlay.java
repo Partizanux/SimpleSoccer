@@ -27,21 +27,16 @@ public enum PutBallBackInPlay implements State<GoalKeeper> {
     @Override
     public void execute(GoalKeeper keeper) {
         PlayerBase receiver = null;
-        Vector2D BallTarget = new Vector2D();
+        Vector2D ballTarget = new Vector2D();
 
         ObjectRef<PlayerBase> receiverRef = new ObjectRef<PlayerBase>(receiver);
 
         //test if there are players further forward on the field we might
         //be able to pass to. If so, make a pass.
-        if (keeper.team().findPass(keeper,
-                receiverRef,
-                BallTarget,
-                Prm.MaxPassingForce,
-                Prm.GoalkeeperMinPassDist)) {
+        if (keeper.team().findPass(keeper, receiverRef, ballTarget, Prm.MaxPassingForce, Prm.GoalkeeperMinPassDist)) {
             receiver = receiverRef.get();
             //make the pass   
-            keeper.ball().kick(Vec2DNormalize(sub(BallTarget, keeper.ball().pos())),
-                    Prm.MaxPassingForce);
+            keeper.ball().kick(Vec2DNormalize(sub(ballTarget, keeper.ball().pos())), Prm.MaxPassingForce);
 
             //goalkeeper no longer has ball 
             keeper.pitch().setGoalKeeperHasBall(false);
@@ -51,10 +46,10 @@ public enum PutBallBackInPlay implements State<GoalKeeper> {
                     keeper.getId(),
                     receiver.getId(),
                     Msg_ReceiveBall,
-                    BallTarget);
+                    ballTarget);
 
             //go back to tending the goal   
-            keeper.GetFSM().ChangeState(TendGoal.INSTANCE);
+            keeper.getFSM().ChangeState(TendGoal.INSTANCE);
 
             return;
         }

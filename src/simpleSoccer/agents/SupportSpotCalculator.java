@@ -48,14 +48,14 @@ public class SupportSpotCalculator {
 
         //calculate the positions of each sweet spot, create them and 
         //store them in m_Spots
-        double HeightOfSSRegion = PlayingField.Height() * 0.8;
-        double WidthOfSSRegion = PlayingField.Width() * 0.9;
+        double HeightOfSSRegion = PlayingField.height() * 0.8;
+        double WidthOfSSRegion = PlayingField.width() * 0.9;
         double SliceX = WidthOfSSRegion / numX;
         double SliceY = HeightOfSSRegion / numY;
 
-        double left = PlayingField.Left() + (PlayingField.Width() - WidthOfSSRegion) / 2.0 + SliceX / 2.0;
-        double right = PlayingField.Right() - (PlayingField.Width() - WidthOfSSRegion) / 2.0 - SliceX / 2.0;
-        double top = PlayingField.Top() + (PlayingField.Height() - HeightOfSSRegion) / 2.0 + SliceY / 2.0;
+        double left = PlayingField.left() + (PlayingField.width() - WidthOfSSRegion) / 2.0 + SliceX / 2.0;
+        double right = PlayingField.right() - (PlayingField.width() - WidthOfSSRegion) / 2.0 - SliceX / 2.0;
+        double top = PlayingField.top() + (PlayingField.height() - HeightOfSSRegion) / 2.0 + SliceY / 2.0;
 
         for (int x = 0; x < (numX / 2) - 1; ++x) {
             for (int y = 0; y < numY; ++y) {

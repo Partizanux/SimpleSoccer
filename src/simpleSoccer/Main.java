@@ -236,6 +236,7 @@ public class Main {
         //start the timer
         timer.Start();
 
+        //TODO rework !!!
         while (true) {
             //update
             if (timer.ReadyForNextFrame()) {

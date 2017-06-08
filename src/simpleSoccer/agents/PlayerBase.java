@@ -37,7 +37,7 @@ abstract public class PlayerBase extends MovingEntity implements AutoList.Interf
     public PlayerBase(SoccerTeam home_team, int home_region, Vector2D heading, Vector2D velocity,
                       double mass, double max_force, double max_speed, double max_turn_rate, double scale,
                       Role role) {
-        super(home_team.pitch().getRegionFromIndex(home_region).Center(), scale * 10.0, velocity, max_speed,
+        super(home_team.pitch().getRegionFromIndex(home_region).center(), scale * 10.0, velocity, max_speed,
                 heading, mass, new Vector2D(scale, scale), max_turn_rate, max_force);
 
         team = home_team;
@@ -71,7 +71,7 @@ abstract public class PlayerBase extends MovingEntity implements AutoList.Interf
         steeringBehaviors = new SteeringBehaviors(this, team.pitch(), ball());
 
         //a player's start target is its start position (because it's just waiting)
-        steeringBehaviors.setTarget(home_team.pitch().getRegionFromIndex(home_region).Center());
+        steeringBehaviors.setTarget(home_team.pitch().getRegionFromIndex(home_region).center());
         new AutoList<PlayerBase>().add(this);
     }
 
@@ -168,9 +168,9 @@ abstract public class PlayerBase extends MovingEntity implements AutoList.Interf
      */
     public boolean inHomeRegion() {
         if (role == Role.GOAL_KEEPER) {
-            return pitch().getRegionFromIndex(homeRegion).Inside(pos(), Region.normal);
+            return pitch().getRegionFromIndex(homeRegion).inside(pos(), Region.RegionModifier.NORMAL);
         } else {
-            return pitch().getRegionFromIndex(homeRegion).Inside(pos(), Region.halfsize);
+            return pitch().getRegionFromIndex(homeRegion).inside(pos(), Region.RegionModifier.HALFSIZE);
         }
     }
 
@@ -179,8 +179,8 @@ abstract public class PlayerBase extends MovingEntity implements AutoList.Interf
      * @return true if this player is ahead of the ATTACKER
      */
     public boolean isAheadOfAttacker() {
-        return abs(pos().x - team().opponentsGoal().Center().x)
-                < abs(team().controllingPlayer().pos().x - team().opponentsGoal().Center().x);
+        return abs(pos().x - team().opponentsGoal().center().x)
+                < abs(team().controllingPlayer().pos().x - team().opponentsGoal().center().x);
     }
 
     /**
@@ -232,8 +232,8 @@ abstract public class PlayerBase extends MovingEntity implements AutoList.Interf
      * the area close to the opponent's goal 
      */
     public boolean inHotRegion() {
-        return abs(pos().x - team().opponentsGoal().Center().x)
-                < pitch().playingArea().Length() / 3.0;
+        return abs(pos().x - team().opponentsGoal().center().x)
+                < pitch().playingArea().length() / 3.0;
     }
 
     Role role() {
@@ -252,11 +252,11 @@ abstract public class PlayerBase extends MovingEntity implements AutoList.Interf
      *  calculate distance to opponent's/home goal. Used frequently by the passing methods
      */
     public double distToOppGoal() {
-        return abs(pos().x - team().opponentsGoal().Center().x);
+        return abs(pos().x - team().opponentsGoal().center().x);
     }
 
     public double distToHomeGoal() {
-        return abs(pos().x - team().homeGoal().Center().x);
+        return abs(pos().x - team().homeGoal().center().x);
     }
 
     public void setDefaultHomeRegion() {

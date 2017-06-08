@@ -4,6 +4,9 @@ import simpleSoccer.agents.GoalKeeper;
 import common.fsm.State;
 import common.messaging.Telegram;
 
+/**
+ * Use this class like a router for all messages to goalkeeper
+ */
 public enum GlobalKeeperState implements State<GoalKeeper> {
     INSTANCE;
 
@@ -24,11 +27,11 @@ public enum GlobalKeeperState implements State<GoalKeeper> {
         switch (telegram.Msg) {
             case Msg_GoHome:
                 keeper.setDefaultHomeRegion();
-                keeper.GetFSM().ChangeState(ReturnHome.INSTANCE);
+                keeper.getFSM().ChangeState(ReturnHome.INSTANCE);
                 break;
 
             case Msg_ReceiveBall:
-                keeper.GetFSM().ChangeState(InterceptBall.INSTANCE);
+                keeper.getFSM().ChangeState(InterceptBall.INSTANCE);
                 break;
         }
 

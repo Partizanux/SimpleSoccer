@@ -49,10 +49,10 @@ public class SoccerPitch {
 
         for (int col = 0; col < NumRegionsHorizontal; ++col) {
             for (int row = 0; row < NumRegionsVertical; ++row) {
-                regions.set(idx, new Region(playingArea().Left() + col * width,
-                        playingArea().Top() + row * height,
-                        playingArea().Left() + (col + 1) * width,
-                        playingArea().Top() + (row + 1) * height,
+                regions.set(idx, new Region(playingArea().left() + col * width,
+                        playingArea().top() + row * height,
+                        playingArea().left() + (col + 1) * width,
+                        playingArea().top() + (row + 1) * height,
                         idx));
                 --idx;
             }
@@ -70,18 +70,16 @@ public class SoccerPitch {
         playingArea = new Region(20, 20, cx - 20, cy - 20);
 
         //create the regions  
-        CreateRegions(playingArea().Width() / (double) NumRegionsHorizontal,
-                playingArea().Height() / (double) NumRegionsVertical);
+        CreateRegions(playingArea().width() / (double) NumRegionsHorizontal,
+                playingArea().height() / (double) NumRegionsVertical);
 
         //create the goals
-        redGoal = new Goal(new Vector2D(playingArea.Left(), (cy - Prm.GoalWidth) / 2),
-                new Vector2D(playingArea.Left(), cy - (cy - Prm.GoalWidth) / 2),
+        redGoal = new Goal(new Vector2D(playingArea.left(), (cy - Prm.GoalWidth) / 2),
+                new Vector2D(playingArea.left(), cy - (cy - Prm.GoalWidth) / 2),
                 new Vector2D(1, 0));
 
-
-
-        blueGoal = new Goal(new Vector2D(playingArea.Right(), (cy - Prm.GoalWidth) / 2),
-                new Vector2D(playingArea.Right(), cy - (cy - Prm.GoalWidth) / 2),
+        blueGoal = new Goal(new Vector2D(playingArea.right(), (cy - Prm.GoalWidth) / 2),
+                new Vector2D(playingArea.right(), cy - (cy - Prm.GoalWidth) / 2),
                 new Vector2D(-1, 0));
 
 
@@ -101,16 +99,16 @@ public class SoccerPitch {
         blueTeam.setOpponents(redTeam);
 
         //create the walls
-        Vector2D TopLeft = new Vector2D(playingArea.Left(), playingArea.Top());
-        Vector2D TopRight = new Vector2D(playingArea.Right(), playingArea.Top());
-        Vector2D BottomRight = new Vector2D(playingArea.Right(), playingArea.Bottom());
-        Vector2D BottomLeft = new Vector2D(playingArea.Left(), playingArea.Bottom());
+        Vector2D TopLeft = new Vector2D(playingArea.left(), playingArea.top());
+        Vector2D TopRight = new Vector2D(playingArea.right(), playingArea.top());
+        Vector2D BottomRight = new Vector2D(playingArea.right(), playingArea.bottom());
+        Vector2D BottomLeft = new Vector2D(playingArea.left(), playingArea.bottom());
 
-        walls.add(new Wall2D(BottomLeft, redGoal.RightPost()));
-        walls.add(new Wall2D(redGoal.LeftPost(), TopLeft));
+        walls.add(new Wall2D(BottomLeft, redGoal.rightPost()));
+        walls.add(new Wall2D(redGoal.leftPost(), TopLeft));
         walls.add(new Wall2D(TopLeft, TopRight));
-        walls.add(new Wall2D(TopRight, blueGoal.LeftPost()));
-        walls.add(new Wall2D(blueGoal.RightPost(), BottomRight));
+        walls.add(new Wall2D(TopRight, blueGoal.leftPost()));
+        walls.add(new Wall2D(blueGoal.rightPost(), BottomRight));
         walls.add(new Wall2D(BottomRight, BottomLeft));
 
         ParamLoader p = ParamLoader.Instance(); // WTF??
@@ -133,7 +131,7 @@ public class SoccerPitch {
         blueTeam.update();
 
         //if a goal has been detected reset the pitch ready for kickoff
-        if (blueGoal.Scored(ball) || redGoal.Scored(ball)) {
+        if (blueGoal.scored(ball) || redGoal.scored(ball)) {
             gameOn = false;
 
             //reset the ball                                                      
@@ -161,19 +159,19 @@ public class SoccerPitch {
         //render the goals
         gdi.HollowBrush();
         gdi.RedPen();
-        gdi.Rect(playingArea.Left(), (cy - Prm.GoalWidth) / 2, playingArea.Left() + 40,
+        gdi.Rect(playingArea.left(), (cy - Prm.GoalWidth) / 2, playingArea.left() + 40,
                 cy - (cy - Prm.GoalWidth) / 2);
 
         gdi.BluePen();
-        gdi.Rect(playingArea.Right(), (cy - Prm.GoalWidth) / 2, playingArea.Right() - 40,
+        gdi.Rect(playingArea.right(), (cy - Prm.GoalWidth) / 2, playingArea.right() - 40,
                 cy - (cy - Prm.GoalWidth) / 2);
 
         //render the pitch markings
         gdi.WhitePen();
-        gdi.Circle(playingArea.Center(), playingArea.Width() * 0.125);
-        gdi.Line(playingArea.Center().x, playingArea.Top(), playingArea.Center().x, playingArea.Bottom());
+        gdi.Circle(playingArea.center(), playingArea.width() * 0.125);
+        gdi.Line(playingArea.center().x, playingArea.top(), playingArea.center().x, playingArea.bottom());
         gdi.WhiteBrush();
-        gdi.Circle(playingArea.Center(), 2.0);
+        gdi.Circle(playingArea.center(), 2.0);
 
 
         //the ball
@@ -194,11 +192,11 @@ public class SoccerPitch {
         //show the score
         gdi.TextColor(Cgdi.red);
         gdi.TextAtPos((cx / 2) - 50, cy - 18,
-                "Red: " + ttos(blueGoal.NumGoalsScored()));
+                "Red: " + ttos(blueGoal.goalsScored()));
 
         gdi.TextColor(Cgdi.blue);
         gdi.TextAtPos((cx / 2) + 10, cy - 18,
-                "Blue: " + ttos(redGoal.NumGoalsScored()));
+                "Blue: " + ttos(redGoal.goalsScored()));
 
         return true;
     }

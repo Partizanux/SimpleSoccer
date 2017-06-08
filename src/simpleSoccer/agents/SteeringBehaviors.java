@@ -179,11 +179,11 @@ public class SteeringBehaviors {
      * Given an opponent and an object position this method returns a 
      * force that attempts to position the agent between them
      */
-    private Vector2D interpose(final SoccerBall ball,
-                               Vector2D target,
-                               double DistFromTarget) {
-        return arrive(add(target, mul(Vec2DNormalize(sub(ball.pos(), target)),
-                DistFromTarget)), Deceleration.normal);
+    private Vector2D interpose(SoccerBall ball, Vector2D target, double interposeDist) {
+        Vector2D toBall = sub(ball.pos(), target);
+        Vector2D interposeFromTarget = mul(Vec2DNormalize(toBall), interposeDist);
+        Vector2D interposePoint = add(target, interposeFromTarget);
+        return arrive(interposePoint, Deceleration.normal);
     }
 
     /**

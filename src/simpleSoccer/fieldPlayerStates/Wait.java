@@ -20,7 +20,7 @@ public enum Wait implements State<FieldPlayer> {
         //home region. This is ensure all the players are in the correct positions
         //ready for kick off
         if (!player.pitch().isGameOn()) {
-            player.steering().setTarget(player.homeRegion().Center());
+            player.steering().setTarget(player.homeRegion().center());
         }
     }
 

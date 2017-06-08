@@ -26,7 +26,7 @@ public enum Dribble implements State<FieldPlayer> {
 
     @Override
     public void execute(FieldPlayer player) {
-        double dot = player.team().homeGoal().Facing().Dot(player.heading());
+        double dot = player.team().homeGoal().facing().Dot(player.heading());
 
         //if the ball is between the player and the home goal, it needs to swivel
         // the ball around by doing multiple small kicks and turns until the player 
@@ -40,7 +40,7 @@ public enum Dribble implements State<FieldPlayer> {
             //facing direction of the goal so that the player rotates around in the 
             //correct direction
             double angle = QuarterPi * -1
-                    * player.team().homeGoal().Facing().Sign(player.heading());
+                    * player.team().homeGoal().facing().Sign(player.heading());
 
             Vec2DRotateAroundOrigin(direction, angle);
 
@@ -51,7 +51,7 @@ public enum Dribble implements State<FieldPlayer> {
             player.ball().kick(direction, KickingForce);
         } //kick the ball down the field
         else {
-            player.ball().kick(player.team().homeGoal().Facing(),
+            player.ball().kick(player.team().homeGoal().facing(),
                     Prm.MaxDribbleForce);
         }
 

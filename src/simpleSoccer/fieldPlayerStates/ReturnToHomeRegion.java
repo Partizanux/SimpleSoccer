@@ -14,8 +14,8 @@ public enum ReturnToHomeRegion implements State<FieldPlayer> {
     public void enter(FieldPlayer player) {
         player.steering().arriveOn();
 
-        if (!player.homeRegion().Inside(player.steering().target(), Region.halfsize)) {
-            player.steering().setTarget(player.homeRegion().Center());
+        if (!player.homeRegion().inside(player.steering().target(), Region.RegionModifier.HALFSIZE)) {
+            player.steering().setTarget(player.homeRegion().center());
         }
 
         if (def(PLAYER_STATE_INFO_ON)) {
@@ -41,8 +41,8 @@ public enum ReturnToHomeRegion implements State<FieldPlayer> {
         //if game is on and close enough to home, change state to wait and set the 
         //player target to his current position.(so that if he gets jostled out of 
         //position he can move back to it)
-        if (player.pitch().isGameOn() && player.homeRegion().Inside(player.pos(),
-                Region.halfsize)) {
+        if (player.pitch().isGameOn() && player.homeRegion().inside(player.pos(),
+                Region.RegionModifier.HALFSIZE)) {
             player.steering().setTarget(player.pos());
             player.getFSM().ChangeState(Wait.INSTANCE);
         } //if game is not on the player must return much closer to the center of his

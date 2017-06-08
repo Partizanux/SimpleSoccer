@@ -20,11 +20,6 @@ final public class CppToJava {
         private KeyCache(KeyCache kc) {
         }
 
-        @Override
-        protected Object clone() throws CloneNotSupportedException {
-            throw new CloneNotSupportedException("Cloning not allowed");
-        }
-
         public void released(KeyEvent e) {
             keys.put(e.getKeyCode(), Boolean.FALSE);
         }
@@ -56,7 +51,8 @@ final public class CppToJava {
             return this.get();
         }
     }
-    
+
+    //TODO replace by AtomicReference ?
     public static class ObjectRef<T extends Object> extends AtomicReference<T> {
         public ObjectRef(T ref) {
             super(ref);
@@ -70,6 +66,7 @@ final public class CppToJava {
         }
     }
 
+    //TODO use copy constructor ?
     public static <T extends Object> List<T> clone(List<T> list) {
         try {
             List<T> c = list.getClass().newInstance();
