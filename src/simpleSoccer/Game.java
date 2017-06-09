@@ -35,6 +35,12 @@ public class Game {
     private static String g_szApplicationName = "Simple Soccer";
     private static SoccerPitch soccerPitch;
 
+    //TODO check carefully
+    /**
+     * because of game restart soccerPitch may be null for a while
+     */
+    private static Lock soccerPitchLock = new ReentrantLock();
+
     private static PrecisionTimer timer = new PrecisionTimer(Prm.FrameRate);
 
 //used when a user clicks on a menu item to ensure the option is 'checked'
@@ -129,9 +135,9 @@ public class Game {
                 gdi.StartDrawing(hdcBackBuffer);
                 //fill our backbuffer with white
                 gdi.fillRect(Color.WHITE, 0, 0, WindowWidth, WindowHeight);
-                //SoccerPitchLock.lock();
+                soccerPitchLock.lock();
                 soccerPitch.render();
-                //SoccerPitchLock.unlock();
+                soccerPitchLock.unlock();
                 gdi.StopDrawing(hdcBackBuffer);
                 g.drawImage(buffer, 0, 0, null);
             }
@@ -182,8 +188,10 @@ public class Game {
                     break;
                     case 'r':
                     case 'R': {
+                        soccerPitchLock.lock();
                         soccerPitch = null;
                         soccerPitch = new SoccerPitch(cxClient, cyClient);
+                        soccerPitchLock.unlock();
                         JMenuBar bar = Script1.createMenu(IDR_MENU1);
                         window.setJMenuBar(bar);
                         bar.revalidate();
@@ -205,7 +213,8 @@ public class Game {
             }
         });
         window.addComponentListener(new ComponentAdapter() {
-            @Override //has the user resized the client area?
+            //has the user resized the client area?
+            @Override
             public void componentResized(ComponentEvent e) {
                 //if so we need to update our variables so that any drawing
                 //we do using cx and cy is scaled accordingly

@@ -650,6 +650,9 @@ public class SoccerTeam {
     }
 
     public void lostControl() {
+        if (controllingPlayer instanceof FieldPlayer) {
+            ((FieldPlayer) controllingPlayer).getFSM().changeState(Wait.INSTANCE);
+        }
         controllingPlayer = null;
     }
 
