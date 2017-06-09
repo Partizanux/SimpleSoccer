@@ -49,7 +49,7 @@ public enum PutBallBackInPlay implements State<GoalKeeper> {
                     ballTarget);
 
             //go back to tending the goal   
-            keeper.getFSM().ChangeState(TendGoal.INSTANCE);
+            keeper.getFSM().changeState(TendGoal.INSTANCE);
 
             return;
         }

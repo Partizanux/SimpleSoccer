@@ -22,7 +22,7 @@ public enum PrepareForKickOff implements TeamState {
     public void execute(SoccerTeam team) {
         //if both teams in position, start the game
         if (team.allPlayersAtHome() && team.opponents().allPlayersAtHome()) {
-            team.getFSM().ChangeState(Defending.INSTANCE);
+            team.getFSM().changeState(Defending.INSTANCE);
         }
     }
 

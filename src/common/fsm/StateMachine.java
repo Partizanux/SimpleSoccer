@@ -13,19 +13,19 @@ public class StateMachine<T> {
         this.owner = owner;
     }
 
-    public void SetCurrentState(State<T> s) {
+    public void setCurrentState(State<T> s) {
         currentState = s;
     }
 
-    public void SetGlobalState(State<T> s) {
+    public void setGlobalState(State<T> s) {
         globalState = s;
     }
 
-    public void SetPreviousState(State<T> s) {
+    public void setPreviousState(State<T> s) {
         previousState = s;
     }
 
-    public void Update() {
+    public void update() {
         if (globalState != null) {
             globalState.execute(owner);
         }
@@ -47,8 +47,8 @@ public class StateMachine<T> {
         return false;
     }
 
-    public void ChangeState(State<T> newState) {
-        assert newState != null : "<StateMachine::ChangeState>: trying to change to NULL state";
+    public void changeState(State<T> newState) {
+        assert newState != null : "<StateMachine::changeState>: trying to change to NULL state";
 
         previousState = currentState;
         currentState.exit(owner);
@@ -56,8 +56,8 @@ public class StateMachine<T> {
         currentState.enter(owner);
     }
 
-    public void RevertToPreviousState() {
-        ChangeState(previousState);
+    public void revertToPreviousState() {
+        changeState(previousState);
     }
 
     //returns true if the current state's type is equal to the type of the

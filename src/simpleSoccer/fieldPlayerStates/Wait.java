@@ -57,7 +57,7 @@ public enum Wait implements State<FieldPlayer> {
             if (player.isClosestTeamMemberToBall()
                     && player.team().receiver() == null
                     && !player.pitch().goalKeeperHasBall()) {
-                player.getFSM().ChangeState(ChaseBall.INSTANCE);
+                player.getFSM().changeState(ChaseBall.INSTANCE);
 
                 return;
             }

@@ -26,7 +26,7 @@ public enum KickBall implements State<FieldPlayer> {
 
         //the player can only make so many kick attempts per second.
         if (!player.isReadyForNextKick()) {
-            player.getFSM().ChangeState(ChaseBall.INSTANCE);
+            player.getFSM().changeState(ChaseBall.INSTANCE);
         }
 
         if (def(PLAYER_STATE_INFO_ON)) {
@@ -49,7 +49,7 @@ public enum KickBall implements State<FieldPlayer> {
                 debug_con.print("Goaly has ball / ball behind player").print("");
             }
 
-            player.getFSM().ChangeState(ChaseBall.INSTANCE);
+            player.getFSM().changeState(ChaseBall.INSTANCE);
             return;
         }
 
@@ -83,7 +83,7 @@ public enum KickBall implements State<FieldPlayer> {
             player.ball().kick(KickDirection, power);
 
             //change state   
-            player.getFSM().ChangeState(Wait.INSTANCE);
+            player.getFSM().changeState(Wait.INSTANCE);
 
             player.FindSupport();
 
@@ -128,13 +128,13 @@ public enum KickBall implements State<FieldPlayer> {
 
             //the player should wait at his current position unless instruced
             //otherwise  
-            player.getFSM().ChangeState(Wait.INSTANCE);
+            player.getFSM().changeState(Wait.INSTANCE);
 
             player.FindSupport();
         } else {
             //cannot shoot or pass, so dribble the ball
             player.FindSupport();
-            player.getFSM().ChangeState(Dribble.INSTANCE);
+            player.getFSM().changeState(Dribble.INSTANCE);
         }
     }
 

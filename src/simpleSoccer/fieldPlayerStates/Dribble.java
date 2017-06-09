@@ -56,7 +56,7 @@ public enum Dribble implements State<FieldPlayer> {
         }
 
         //the player has kicked the ball so he must now change state to follow it
-        player.getFSM().ChangeState(ChaseBall.INSTANCE);
+        player.getFSM().changeState(ChaseBall.INSTANCE);
 
         return;
     }

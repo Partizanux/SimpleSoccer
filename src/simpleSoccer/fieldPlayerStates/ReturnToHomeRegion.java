@@ -32,7 +32,7 @@ public enum ReturnToHomeRegion implements State<FieldPlayer> {
             if (player.isClosestTeamMemberToBall()
                     && (player.team().receiver() == null)
                     && !player.pitch().goalKeeperHasBall()) {
-                player.getFSM().ChangeState(ChaseBall.INSTANCE);
+                player.getFSM().changeState(ChaseBall.INSTANCE);
 
                 return;
             }
@@ -44,11 +44,11 @@ public enum ReturnToHomeRegion implements State<FieldPlayer> {
         if (player.pitch().isGameOn() && player.homeRegion().inside(player.pos(),
                 Region.RegionModifier.HALFSIZE)) {
             player.steering().setTarget(player.pos());
-            player.getFSM().ChangeState(Wait.INSTANCE);
+            player.getFSM().changeState(Wait.INSTANCE);
         } //if game is not on the player must return much closer to the center of his
         //home region
         else if (!player.pitch().isGameOn() && player.atTarget()) {
-            player.getFSM().ChangeState(Wait.INSTANCE);
+            player.getFSM().changeState(Wait.INSTANCE);
         }
     }
 

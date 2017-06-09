@@ -16,11 +16,13 @@ import static common.game.EntityFunctionTemplates.EnforceNonPenetrationContraint
 import static simpleSoccer.ParamLoader.Prm;
 
 public class GoalKeeper extends PlayerBase {
-    //TODO move up
     private StateMachine<GoalKeeper> stateMachine;
-    //this vector is updated to point towards the ball and is used when
-    //rendering the goalkeeper (instead of the underlying vehicle's heading)
-    //to ensure he always appears to be watching the ball
+
+    /**
+     * this vector is updated to point towards the ball and is used when
+     * rendering the goalkeeper (instead of the underlying vehicle's heading)
+     * to ensure he always appears to be watching the ball
+     */
     private Vector2D lookAt = new Vector2D();
 
     public GoalKeeper(SoccerTeam home_team, int home_region, State<GoalKeeper> start_state, Vector2D heading, Vector2D velocity,
@@ -28,9 +30,9 @@ public class GoalKeeper extends PlayerBase {
         super(home_team, home_region, heading, velocity, mass, max_force, max_speed, max_turn_rate, scale, Role.GOAL_KEEPER);
 
         stateMachine = new StateMachine<>(this);
-        stateMachine.SetCurrentState(start_state);
-        stateMachine.SetPreviousState(start_state);
-        stateMachine.SetGlobalState(GlobalKeeperState.INSTANCE);
+        stateMachine.setCurrentState(start_state);
+        stateMachine.setPreviousState(start_state);
+        stateMachine.setGlobalState(GlobalKeeperState.INSTANCE);
         stateMachine.currentState().enter(this);
     }
 
@@ -42,7 +44,7 @@ public class GoalKeeper extends PlayerBase {
 
     public void update() {
         //run the logic for the current state
-        stateMachine.Update();
+        stateMachine.update();
 
         //calculate the combined force from each steering behavior 
         Vector2D SteeringForce = steeringBehaviors.calculate();

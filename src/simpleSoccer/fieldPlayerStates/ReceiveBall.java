@@ -50,7 +50,7 @@ public enum ReceiveBall implements State<FieldPlayer> {
         //if the ball comes close enough to the player or if his team lose control
         //he should change state to chase the ball
         if (player.ballWithinReceivingRange() || !player.team().inControl()) {
-            player.getFSM().ChangeState(ChaseBall.INSTANCE);
+            player.getFSM().changeState(ChaseBall.INSTANCE);
             return;
         }
 

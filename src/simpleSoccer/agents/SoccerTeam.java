@@ -37,11 +37,8 @@ public class SoccerTeam {
     public static Color blue = Color.BLUE;
     public static Color red = Color.RED;
 
-    //TODO move up
     private StateMachine<SoccerTeam> stateMachine;
-    //the team must know its own color!
     private Color color;
-    //pointers to the team members
     private List<PlayerBase> players = new ArrayList<PlayerBase>(5);
     private SoccerPitch pitch;
     private Goal opponentsGoal;
@@ -51,9 +48,15 @@ public class SoccerTeam {
     private PlayerBase supportingPlayer;
     private PlayerBase receivingPlayer;
     private PlayerBase playerClosestToBall;
-    //the squared distance the closest player is from the ball
+
+    /**
+     * the squared distance the closest player is from the ball
+     */
     private double distSqToBallOfClosestPlayer;
-    //players use this to determine strategic positions on the playing field
+
+    /**
+     * players use this to determine strategic positions on the playing field
+     */
     private SupportSpotCalculator supportSpotCalculator;
 
     public SoccerTeam(Goal home_goal, Goal opponents_goal, SoccerPitch pitch, Color color) {
@@ -69,11 +72,11 @@ public class SoccerTeam {
         playerClosestToBall = null;
 
         //setup the state machine
-        stateMachine = new StateMachine<SoccerTeam>(this);
+        stateMachine = new StateMachine<>(this);
 
-        stateMachine.SetCurrentState(Defending.INSTANCE);
-        stateMachine.SetPreviousState(Defending.INSTANCE);
-        stateMachine.SetGlobalState(null);
+        stateMachine.setCurrentState(Defending.INSTANCE);
+        stateMachine.setPreviousState(Defending.INSTANCE);
+        stateMachine.setGlobalState(null);
 
         //create the players and goalkeeper
         createPlayers();
@@ -82,10 +85,8 @@ public class SoccerTeam {
             player.steering().separationOn();
         }
 
-        //create the sweet spot calculator
-        supportSpotCalculator = new SupportSpotCalculator(Prm.NumSupportSpotsX,
-                Prm.NumSupportSpotsY,
-                this);
+        //create the support spot calculator
+        supportSpotCalculator = new SupportSpotCalculator(Prm.NumSupportSpotsX, Prm.NumSupportSpotsY, this);
     }
 
     /**
@@ -114,7 +115,7 @@ public class SoccerTeam {
     }
 
     /**
-     * called each frame. Sets m_pClosestPlayerToBall to point to the player
+     * Called each frame. Sets m_pClosestPlayerToBall to point to the player
      * closest to the ball. 
      */
     private void calculateClosestPlayerToBall() {
@@ -141,7 +142,7 @@ public class SoccerTeam {
     }
 
     /**
-     *  renders the players and any team related info
+     *  Renders the players and any team related info
      */
     public void render() {
         for (PlayerBase player : players) {
@@ -218,7 +219,7 @@ public class SoccerTeam {
         //the team state machine switches between attack/defense behavior. It
         //also handles the 'kick off' state where a team must return to their
         //kick off positions before the whistle is blown
-        stateMachine.Update();
+        stateMachine.update();
 
         //now update each player
         ListIterator<PlayerBase> it = players.listIterator();
@@ -230,7 +231,7 @@ public class SoccerTeam {
     }
 
     /**
-     * calling this changes the state of all field players to that of 
+     * Calling this changes the state of all field players to that of
      * ReturnToHomeRegion. Mainly used when a goal keeper has
      * possession
      */
@@ -298,6 +299,7 @@ public class SoccerTeam {
         return false;
     }
 
+    //TODO refactor, remove ObjectRef, method must return receiver or null
     /**
      * The best pass is considered to be the pass that cannot be intercepted 
      * by an opponent and that is as far forward of the receiver as possible  

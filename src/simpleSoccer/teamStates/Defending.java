@@ -36,7 +36,7 @@ public enum Defending implements TeamState {
     public void execute(SoccerTeam team) {
         //if in control change states
         if (team.inControl()) {
-            team.getFSM().ChangeState(Attacking.INSTANCE);
+            team.getFSM().changeState(Attacking.INSTANCE);
             return;
         }
     }

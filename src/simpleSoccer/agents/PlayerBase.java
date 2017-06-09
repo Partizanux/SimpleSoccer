@@ -2,6 +2,7 @@ package simpleSoccer.agents;
 
 import java.util.ListIterator;
 import common.D2.Vector2D;
+import common.fsm.StateMachine;
 import common.misc.AutoList;
 import java.util.LinkedList;
 import java.util.List;
@@ -16,22 +17,34 @@ abstract public class PlayerBase extends MovingEntity implements AutoList.Interf
     public enum Role {
         GOAL_KEEPER, ATTACKER, DEFENDER
     }
-    //this player's role in the team
+
     protected Role role;
-    //a pointer to this player's team
     protected SoccerTeam team;
-    //the steering behaviors
+
+    /**
+     * the steering behaviors
+     */
     protected SteeringBehaviors steeringBehaviors;
-    //the region that this player is assigned to.
+    /**
+     * the region that this player is assigned to
+     */
     protected int homeRegion;
-    //the region this player moves to before kickoff
+    /**
+     * the region this player moves to before kickoff
+     */
     protected int defaultRegion;
-    //the distance to the ball (in squared-space). This value is queried 
-    //a lot so it's calculated once each time-step and stored here.
+    /**
+     * the distance to the ball (in squared-space). This value is queried
+     * a lot so it's calculated once each time-step and stored here.
+     */
     protected double DistToBallSq;
-    //the vertex buffer
+    /**
+     * the vertex buffer
+     */
     protected List<Vector2D> playerVertices = new LinkedList<Vector2D>();
-    //the buffer for the transformed vertices
+    /**
+     * the buffer for the transformed vertices
+     */
     protected List<Vector2D> playerVertTrans = new LinkedList<Vector2D>();
 
     public PlayerBase(SoccerTeam home_team, int home_region, Vector2D heading, Vector2D velocity,
@@ -198,9 +211,7 @@ abstract public class PlayerBase extends MovingEntity implements AutoList.Interf
     }
 
     /**
-     * @param position
-     * @return true if the point specified by 'position' is located in
-     * front of the player
+     * @return true if the point specified by 'position' is located in front of the player
      */
     public boolean positionInFrontOfPlayer(Vector2D position) {
         Vector2D ToSubject = sub(position, pos());

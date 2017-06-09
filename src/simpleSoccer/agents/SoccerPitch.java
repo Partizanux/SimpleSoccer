@@ -138,8 +138,8 @@ public class SoccerPitch {
             ball.placeAtPosition(new Vector2D((double) cx / 2.0, (double) cy / 2.0));
 
             //get the teams ready for kickoff
-            redTeam.getFSM().ChangeState(PrepareForKickOff.INSTANCE);
-            blueTeam.getFSM().ChangeState(PrepareForKickOff.INSTANCE);
+            redTeam.getFSM().changeState(PrepareForKickOff.INSTANCE);
+            blueTeam.getFSM().changeState(PrepareForKickOff.INSTANCE);
         }
     }
 

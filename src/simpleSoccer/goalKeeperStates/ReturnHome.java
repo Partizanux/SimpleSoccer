@@ -19,7 +19,7 @@ public enum ReturnHome implements State<GoalKeeper> {
         //if close enough to home or the opponents get control over the ball,
         //change state to tend goal
         if (keeper.inHomeRegion() || !keeper.team().inControl()) {
-            keeper.getFSM().ChangeState(TendGoal.INSTANCE);
+            keeper.getFSM().changeState(TendGoal.INSTANCE);
         }
     }
 

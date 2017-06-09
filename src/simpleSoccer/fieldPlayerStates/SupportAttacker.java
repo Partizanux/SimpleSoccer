@@ -26,7 +26,7 @@ public enum SupportAttacker implements State<FieldPlayer> {
     public void execute(FieldPlayer player) {
         //if his team loses control go back home
         if (!player.team().inControl()) {
-            player.getFSM().ChangeState(ReturnToHomeRegion.INSTANCE);
+            player.getFSM().changeState(ReturnToHomeRegion.INSTANCE);
             return;
         }
 

@@ -43,7 +43,7 @@ public enum GlobalPlayerState implements State<FieldPlayer> {
                 player.steering().setTarget((Vector2D) telegram.ExtraInfo);
 
                 //change state 
-                player.getFSM().ChangeState(ReceiveBall.INSTANCE);
+                player.getFSM().changeState(ReceiveBall.INSTANCE);
 
                 return true;
             }
@@ -59,14 +59,14 @@ public enum GlobalPlayerState implements State<FieldPlayer> {
                 player.steering().setTarget(player.team().getSupportSpot());
 
                 //change the state
-                player.getFSM().ChangeState(SupportAttacker.INSTANCE);
+                player.getFSM().changeState(SupportAttacker.INSTANCE);
 
                 return true;
             }
 
             case Msg_Wait: {
                 //change the state
-                player.getFSM().ChangeState(Wait.INSTANCE);
+                player.getFSM().changeState(Wait.INSTANCE);
 
                 return true;
             }
@@ -74,7 +74,7 @@ public enum GlobalPlayerState implements State<FieldPlayer> {
             case Msg_GoHome: {
                 player.setDefaultHomeRegion();
 
-                player.getFSM().ChangeState(ReturnToHomeRegion.INSTANCE);
+                player.getFSM().changeState(ReturnToHomeRegion.INSTANCE);
 
                 return true;
             }
@@ -118,7 +118,7 @@ public enum GlobalPlayerState implements State<FieldPlayer> {
 
 
                 //change state   
-                player.getFSM().ChangeState(Wait.INSTANCE);
+                player.getFSM().changeState(Wait.INSTANCE);
 
                 player.FindSupport();
 

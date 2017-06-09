@@ -37,7 +37,7 @@ public enum Attacking implements TeamState {
     public void execute(SoccerTeam team) {
         //if this team is no longer in control change states
         if (!team.inControl()) {
-            team.getFSM().ChangeState(Defending.INSTANCE);
+            team.getFSM().changeState(Defending.INSTANCE);
             return;
         }
 

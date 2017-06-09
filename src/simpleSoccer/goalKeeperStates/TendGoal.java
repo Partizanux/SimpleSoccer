@@ -28,20 +28,20 @@ public enum TendGoal implements State<GoalKeeper> {
         if (keeper.ballWithinKeeperRange()) {
             keeper.ball().trap();
             keeper.pitch().setGoalKeeperHasBall(true);
-            keeper.getFSM().ChangeState(PutBallBackInPlay.INSTANCE);
+            keeper.getFSM().changeState(PutBallBackInPlay.INSTANCE);
             return;
         }
 
         //if ball is within a predefined distance, the keeper moves out from
         //position to try and intercept it.
         if (keeper.ballWithinRangeForIntercept() && !keeper.team().inControl()) {
-            keeper.getFSM().ChangeState(InterceptBall.INSTANCE);
+            keeper.getFSM().changeState(InterceptBall.INSTANCE);
         }
 
         //if the keeper has ventured too far away from the goal-line and there
         //is no threat from the opponents he should move back towards it
         if (keeper.tooFarFromGoalMouth() && keeper.team().inControl()) {
-            keeper.getFSM().ChangeState(ReturnHome.INSTANCE);
+            keeper.getFSM().changeState(ReturnHome.INSTANCE);
             return;
         }
     }

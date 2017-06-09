@@ -35,10 +35,6 @@ public class Game {
     private static String g_szApplicationName = "Simple Soccer";
     private static SoccerPitch soccerPitch;
 
-    //TODO remove
-    // bacause of game restart (soccerPitch could be null for a while)
-    private static Lock SoccerPitchLock = new ReentrantLock();
-
     private static PrecisionTimer timer = new PrecisionTimer(Prm.FrameRate);
 
 //used when a user clicks on a menu item to ensure the option is 'checked'
@@ -186,13 +182,11 @@ public class Game {
                     break;
                     case 'r':
                     case 'R': {
-                        SoccerPitchLock.lock();
                         soccerPitch = null;
                         soccerPitch = new SoccerPitch(cxClient, cyClient);
                         JMenuBar bar = Script1.createMenu(IDR_MENU1);
                         window.setJMenuBar(bar);
                         bar.revalidate();
-                        SoccerPitchLock.unlock();
                     }
                     break;
 

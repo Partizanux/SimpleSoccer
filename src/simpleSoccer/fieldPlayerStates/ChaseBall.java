@@ -21,7 +21,7 @@ public enum ChaseBall implements State<FieldPlayer> {
     public void execute(FieldPlayer player) {
         //if the ball is within kicking range the player changes state to KickBall.
         if (player.ballWithinKickingRange()) {
-            player.getFSM().ChangeState(KickBall.INSTANCE);
+            player.getFSM().changeState(KickBall.INSTANCE);
             return;
         }
 
@@ -34,7 +34,7 @@ public enum ChaseBall implements State<FieldPlayer> {
 
         //if the player is not closest to the ball anymore, he should return back
         //to his home region and wait for another opportunity
-        player.getFSM().ChangeState(ReturnToHomeRegion.INSTANCE);
+        player.getFSM().changeState(ReturnToHomeRegion.INSTANCE);
     }
 
     @Override

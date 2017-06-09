@@ -27,11 +27,11 @@ public enum GlobalKeeperState implements State<GoalKeeper> {
         switch (telegram.Msg) {
             case Msg_GoHome:
                 keeper.setDefaultHomeRegion();
-                keeper.getFSM().ChangeState(ReturnHome.INSTANCE);
+                keeper.getFSM().changeState(ReturnHome.INSTANCE);
                 break;
 
             case Msg_ReceiveBall:
-                keeper.getFSM().ChangeState(InterceptBall.INSTANCE);
+                keeper.getFSM().changeState(InterceptBall.INSTANCE);
                 break;
         }
 

@@ -23,7 +23,7 @@ public enum InterceptBall implements State<GoalKeeper> {
         //home region UNLESS he is the closest player to the ball, in which case,
         //he should keep trying to intercept it.
         if (keeper.tooFarFromGoalMouth() && !keeper.isClosestPlayerOnPitchToBall()) {
-            keeper.getFSM().ChangeState(ReturnHome.INSTANCE);
+            keeper.getFSM().changeState(ReturnHome.INSTANCE);
             return;
         }
 
@@ -32,7 +32,7 @@ public enum InterceptBall implements State<GoalKeeper> {
         if (keeper.ballWithinKeeperRange()) {
             keeper.ball().trap();
             keeper.pitch().setGoalKeeperHasBall(true);
-            keeper.getFSM().ChangeState(PutBallBackInPlay.INSTANCE);
+            keeper.getFSM().changeState(PutBallBackInPlay.INSTANCE);
             return;
         }
     }

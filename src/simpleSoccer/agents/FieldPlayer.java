@@ -19,7 +19,6 @@ import static common.misc.Stream_Utility_function.ttos;
 import static simpleSoccer.ParamLoader.Prm;
 
 public class FieldPlayer extends PlayerBase {
-    //TODO move up
     private StateMachine<FieldPlayer> stateMachine;
     //limits the number of kicks a player may take per second
     private Regulator kickLimiter;
@@ -30,9 +29,9 @@ public class FieldPlayer extends PlayerBase {
         stateMachine = new StateMachine<>(this);
 
         if (start_state != null) {
-            stateMachine.SetCurrentState(start_state);
-            stateMachine.SetPreviousState(start_state);
-            stateMachine.SetGlobalState(GlobalPlayerState.INSTANCE);
+            stateMachine.setCurrentState(start_state);
+            stateMachine.setPreviousState(start_state);
+            stateMachine.setGlobalState(GlobalPlayerState.INSTANCE);
 
             stateMachine.currentState().enter(this);
         }
@@ -52,7 +51,7 @@ public class FieldPlayer extends PlayerBase {
      */
     public void update() {
         //run the logic for the current state
-        stateMachine.Update();
+        stateMachine.update();
 
         //calculate the combined steering force
         steeringBehaviors.calculate();
