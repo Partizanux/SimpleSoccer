@@ -25,7 +25,6 @@ import common.time.PrecisionTimer;
 import simpleSoccer.agents.SoccerPitch;
 
 import static simpleSoccer.ParamLoader.Prm;
-import static simpleSoccer.constants.*;
 import static simpleSoccer.resource.*;
 import static common.misc.Cgdi.gdi;
 import static common.misc.WindowUtils.*;
@@ -134,7 +133,7 @@ public class Game {
                 super.paint(g);
                 gdi.StartDrawing(hdcBackBuffer);
                 //fill our backbuffer with white
-                gdi.fillRect(Color.WHITE, 0, 0, WindowWidth, WindowHeight);
+                gdi.fillRect(Color.WHITE, 0, 0, Prm.width, Prm.height);
                 soccerPitchLock.lock();
                 soccerPitch.render();
                 soccerPitchLock.unlock();
@@ -142,15 +141,15 @@ public class Game {
                 g.drawImage(buffer, 0, 0, null);
             }
         };
-        panel.setSize(WindowWidth, WindowHeight);
-        panel.setPreferredSize(new Dimension(WindowWidth, WindowHeight));
+        panel.setSize(Prm.width, Prm.height);
+        panel.setPreferredSize(new Dimension(Prm.width, Prm.height));
     }
 
     public static void main(String[] args) {
         final Window window = new Window(g_szApplicationName);
         window.setIconImage(LoadIcon("/SimpleSoccer/icon1.png"));
         window.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
-        buffer = new BufferedImage(WindowWidth, WindowHeight, BufferedImage.TYPE_INT_RGB);
+        buffer = new BufferedImage(Prm.width, Prm.height, BufferedImage.TYPE_INT_RGB);
         hdcBackBuffer = buffer.createGraphics();
         //these hold the dimensions of the client window area
         cxClient = buffer.getWidth();
@@ -167,7 +166,8 @@ public class Game {
         window.setResizable(false);
 
         int y = center.y - window.getHeight() / 2;
-        window.setLocation(center.x - window.getWidth() / 2, y >= 0 ? y : 0);
+        //window.setLocation(center.x - window.getWidth() / 2, y >= 0 ? y : 0);
+        window.setLocation(0 ,0);
         Script1.MyMenuBar menu = Script1.createMenu(IDR_MENU1);
         window.setJMenuBar(menu);
 

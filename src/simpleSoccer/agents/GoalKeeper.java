@@ -96,7 +96,7 @@ public class GoalKeeper extends PlayerBase {
 
         //draw the head
         gdi.BrownBrush();
-        gdi.Circle(pos(), 6);
+        gdi.Circle(pos(), Prm.playerRadius*Prm.PlayerScale);
 
         //draw the getId
         if (Prm.bIDs) {

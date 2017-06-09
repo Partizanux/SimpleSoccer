@@ -20,7 +20,10 @@ public class ParamLoader extends iniFileLoaderBase {
     }
 
     private ParamLoader() throws IOException {
-        super(ParamLoader.class.getResourceAsStream("Params.ini"));
+        super(ParamLoader.class.getResourceAsStream("Params_scaled.ini"));
+        width = GetNextParameterInt();
+        height = GetNextParameterInt();
+
         GoalWidth                   = GetNextParameterDouble(); 
     
     NumSupportSpotsX            = GetNextParameterInt();    
@@ -51,8 +54,9 @@ public class ParamLoader extends iniFileLoaderBase {
     PlayerMaxForce              = GetNextParameterDouble();    
     PlayerMaxSpeedWithBall      = GetNextParameterDouble();   
     PlayerMaxSpeedWithoutBall   = GetNextParameterDouble();   
-    PlayerMaxTurnRate           = GetNextParameterDouble();   
-    PlayerScale                 = GetNextParameterDouble();      
+    PlayerMaxTurnRate           = GetNextParameterDouble();
+        playerRadius = GetNextParameterDouble();
+        PlayerScale                 = GetNextParameterDouble();
     PlayerComfortZone           = GetNextParameterDouble();  
     PlayerKickingAccuracy       = GetNextParameterDouble();
 
@@ -98,7 +102,10 @@ public class ParamLoader extends iniFileLoaderBase {
     GoalKeeperInterceptRangeSq     = GoalKeeperInterceptRange * GoalKeeperInterceptRange;
     WithinRangeOfSupportSpotSq = WithinRangeOfSupportSpot * WithinRangeOfSupportSpot;
     }
-    
+
+    public int width;
+    public int height;
+
   public double GoalWidth;
 
   public int   NumSupportSpotsX;
@@ -133,6 +140,7 @@ public class ParamLoader extends iniFileLoaderBase {
   public double PlayerMaxSpeedWithBall;
   public double PlayerMaxSpeedWithoutBall;
   public double PlayerMaxTurnRate;
+    public double playerRadius;
   public double PlayerScale;
   public double PlayerComfortZone;
 

@@ -81,6 +81,8 @@ public class FieldPlayer extends PlayerBase {
         //and recreate side
         side = heading.Perp();
 
+        /*if (this.team.color() == SoccerTeam.Color.RED)
+            System.out.println(steeringBehaviors.force().Length());*/
         //now to calculate the acceleration due to the force exerted by
         //the forward component of the steering force in the direction
         //of the player's heading
@@ -124,7 +126,7 @@ public class FieldPlayer extends PlayerBase {
         if (Prm.bHighlightIfThreatened && (team().controllingPlayer() == this) && isThreatened()) {
             gdi.YellowBrush();
         }
-        gdi.Circle(pos(), 6);
+        gdi.Circle(pos(), Prm.playerRadius*Prm.PlayerScale);
 
 
         //render the state

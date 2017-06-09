@@ -81,7 +81,7 @@ public class SteeringBehaviors {
 
     /**
      * Given a target, this Behavior returns a steering force which will
-     * allign the agent with the target and move the agent in the desired
+     * align the agent with the target and move the agent in the desired
      * direction
      */
     private Vector2D seek(Vector2D target) {
