@@ -401,7 +401,10 @@ public class Cgdi {
                 RenderingHints.VALUE_ANTIALIAS_ON);
     }
 
-    //ALWAYS call this after drawing
+    //TODO rename to cleanup ?
+    /**
+     * ALWAYS call this after drawing
+     */
     public void StopDrawing(Graphics2D hdc) {
         assert (hdc != null);
 

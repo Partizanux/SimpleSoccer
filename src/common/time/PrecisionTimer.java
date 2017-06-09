@@ -1,150 +1,137 @@
 package common.time;
 
 /**
- *
  *  Desc: Windows timer class.
- *
- *        nb. this only uses the high performance timer. There is no
- *        support for ancient computers. I know, I know, I should add
- *        support, but hey, I have shares in AMD and Intel... Go upgrade ;o)
- *
  */
 public class PrecisionTimer {
-
-    private Long m_CurrentTime,
-            m_LastTime,
-            m_LastTimeInTimeElapsed,
-            m_NextTime,
-            m_StartTime,
-            m_FrameTime,
-            m_PerfCountFreq;
-    private double m_TimeElapsed,
-            m_LastTimeElapsed,
-            m_TimeScale;
-    private double m_NormalFPS;
-    private double m_SlowFPS;
-    private boolean m_bStarted;
-    //if true a call to TimeElapsed() will return 0 if the current
+    public static final double SMOOTHNESS = 5.0;
+    private Long currentTime,
+            lastTime,
+            lastTimeInTimeElapsed,
+            nextTime,
+            startTime,
+            frameTime,
+            perfCountFreq;
+    private double timeElapsed,
+            lastTimeElapsed,
+            timeScale;
+    private double normalFPS;
+    private double slowFPS;
+    private boolean started;
+    //if true a call to timeElapsed() will return 0 if the current
     //time elapsed is much smaller than the previous. Used to counter
     //the problems associated with the user using menus/resizing/moving 
     //a window etc
-    private boolean m_bSmoothUpdates;
+    private boolean smoothUpdates;
 
-    /**
-     * default constructor
-     */
     public PrecisionTimer() {
-        m_NormalFPS = 0.0;
-        m_SlowFPS = 1.0;
-        m_TimeElapsed = 0.0;
-        m_FrameTime = 0L;
-        m_LastTime = 0L;
-        m_LastTimeInTimeElapsed = 0L;
-        m_PerfCountFreq = 0L;
-        m_bStarted = false;
-        m_StartTime = 0L;
-        m_LastTimeElapsed = 0.0;
-        m_bSmoothUpdates = false;
+        normalFPS = 0.0;
+        slowFPS = 1.0;
+        timeElapsed = 0.0;
+        frameTime = 0L;
+        lastTime = 0L;
+        lastTimeInTimeElapsed = 0L;
+        perfCountFreq = 0L;
+        started = false;
+        startTime = 0L;
+        lastTimeElapsed = 0.0;
+        smoothUpdates = false;
 
         //how many ticks per sec do we get
-        //QueryPerformanceFrequency((LARGE_INTEGER *) & m_PerfCountFreq);
+        //QueryPerformanceFrequency((LARGE_INTEGER *) & perfCountFreq);
         //using System.nanoSecond() it is obviously 1 000 000 000 nano second per second
-        m_PerfCountFreq = 1000000000L;
+        perfCountFreq = 1000000000L;
 
-        m_TimeScale = 1.0 / m_PerfCountFreq;
+        timeScale = 1.0 / perfCountFreq;
     }
 
     /**
     /* use to specify FPS
      */
     public PrecisionTimer(double fps) {
-        m_NormalFPS = fps;
-        m_SlowFPS = 1.0;
-        m_TimeElapsed = 0.0;
-        m_FrameTime = 0L;
-        m_LastTime = 0L;
-        m_LastTimeInTimeElapsed = 0L;
-        m_PerfCountFreq = 0L;
-        m_bStarted = false;
-        m_StartTime = 0L;
-        m_LastTimeElapsed = 0.0;
-        m_bSmoothUpdates = false;
+        normalFPS = fps;
+        slowFPS = 1.0;
+        timeElapsed = 0.0;
+        frameTime = 0L;
+        lastTime = 0L;
+        lastTimeInTimeElapsed = 0L;
+        perfCountFreq = 0L;
+        started = false;
+        startTime = 0L;
+        lastTimeElapsed = 0.0;
+        smoothUpdates = false;
 
         //how many ticks per sec do we get
-        //QueryPerformanceFrequency((LARGE_INTEGER *) & m_PerfCountFreq);
+        //QueryPerformanceFrequency((LARGE_INTEGER *) & perfCountFreq);
         //using System.nanoSecond() it is obviously 1 000 000 000 nano second per second
-        m_PerfCountFreq = 1000000000L;
+        perfCountFreq = 1000000000L;//nanosec in sec
 
-        m_TimeScale = 1.0 / m_PerfCountFreq;
+        timeScale = 1.0 / perfCountFreq;
 
         //calculate ticks per frame
-        m_FrameTime = (long) (m_PerfCountFreq / m_NormalFPS);
+        frameTime = (long) (perfCountFreq / normalFPS);
+    }
+
+    //only use this after a call to the above.
+    //public double getTimeElapsed(){return timeElapsed;}
+    public double currentTime() {
+        //QueryPerformanceCounter((LARGE_INTEGER *) & currentTime);
+        currentTime = System.nanoTime();
+
+        return (currentTime - startTime) * timeScale;
+    }
+
+    public boolean isStarted() {
+        return started;
+    }
+
+    public void smoothUpdatesOn() {
+        smoothUpdates = true;
+    }
+
+    public void smoothUpdatesOff() {
+        smoothUpdates = false;
     }
 
     /**
-     *  whatdayaknow, this starts the timer
-     *  call this immediately prior to game loop. Starts the timer (obviously!)
-     *
+     * starts the timer
      */
-    public void Start() {
-        m_bStarted = true;
+    public void start() {
+        started = true;
 
-        m_TimeElapsed = 0.0;
+        timeElapsed = 0.0;
 
-        //get the time
-        //QueryPerformanceCounter((LARGE_INTEGER *) & m_LastTime);
-        m_LastTime = System.nanoTime();
+        //QueryPerformanceCounter((LARGE_INTEGER *) & lastTime);
+        lastTime = System.nanoTime();
 
+        //TODO move to separate method tick ?
         //keep a record of when the timer was started
-        m_StartTime = m_LastTimeInTimeElapsed = m_LastTime;
+        startTime = lastTimeInTimeElapsed = lastTime;
 
         //update time to render next frame
-        m_NextTime = m_LastTime + m_FrameTime;
-
-        return;
-    }
-
-    //determines if enough time has passed to move onto next frame
-    //public boolean    ReadyForNextFrame();
-    //only use this after a call to the above.
-    //double  GetTimeElapsed(){return m_TimeElapsed;}
-    //public double  TimeElapsed();
-    public double CurrentTime() {
-        //QueryPerformanceCounter((LARGE_INTEGER *) & m_CurrentTime);
-        m_CurrentTime = System.nanoTime();
-
-        return (m_CurrentTime - m_StartTime) * m_TimeScale;
-    }
-
-    public boolean Started() {
-        return m_bStarted;
-    }
-
-    public void SmoothUpdatesOn() {
-        m_bSmoothUpdates = true;
-    }
-
-    public void SmoothUpdatesOff() {
-        m_bSmoothUpdates = false;
+        nextTime = lastTime + frameTime;
     }
 
     /**
-     *  returns true if it is time to move on to the next frame step. To be used if
-     *  FPS is set.
+     * Determines if enough time has passed to move onto next frame
+     * @return true if it is time to move on to the next frame step. To be used if
+     * FPS is set
      */
-    public boolean ReadyForNextFrame() {
-        assert m_NormalFPS != 0 : "PrecisionTimer::ReadyForNextFrame<No FPS set in timer>";
+    public boolean readyForNextFrame() {
+        assert normalFPS != 0 : "PrecisionTimer::readyForNextFrame<No FPS set in timer>";
 
-        //QueryPerformanceCounter((LARGE_INTEGER *) & m_CurrentTime);
-        m_CurrentTime = System.nanoTime();
+        //QueryPerformanceCounter((LARGE_INTEGER *) & currentTime);
+        currentTime = System.nanoTime();
 
-        if (m_CurrentTime > m_NextTime) {
+        if (currentTime > nextTime) {
 
-            m_TimeElapsed = (m_CurrentTime - m_LastTime) * m_TimeScale;
-            m_LastTime = m_CurrentTime;
+            timeElapsed = (currentTime - lastTime) * timeScale;
+
+            //TODO move to separate method tick ?
+            lastTime = currentTime;
 
             //update time to render next frame
-            m_NextTime = m_CurrentTime + m_FrameTime;
+            nextTime = currentTime + frameTime;
 
             return true;
         }
@@ -153,28 +140,26 @@ public class PrecisionTimer {
     }
 
     /**
-     *  returns time elapsed since last call to this function.
+     * @return time elapsed since last call to this function
      */
-    public double TimeElapsed() {
-        m_LastTimeElapsed = m_TimeElapsed;
+    public double timeElapsed() {
+        lastTimeElapsed = timeElapsed;
 
-        //QueryPerformanceCounter((LARGE_INTEGER *) & m_CurrentTime);
-        m_CurrentTime = System.nanoTime();
+        //QueryPerformanceCounter((LARGE_INTEGER *) & currentTime);
+        currentTime = System.nanoTime();
 
-        m_TimeElapsed = (m_CurrentTime - m_LastTimeInTimeElapsed) * m_TimeScale;
+        timeElapsed = (currentTime - lastTimeInTimeElapsed) * timeScale;
 
-        m_LastTimeInTimeElapsed = m_CurrentTime;
+        lastTimeInTimeElapsed = currentTime;
 
-        final double Smoothness = 5.0;
-
-        if (m_bSmoothUpdates) {
-            if (m_TimeElapsed < (m_LastTimeElapsed * Smoothness)) {
-                return m_TimeElapsed;
+        if (smoothUpdates) {
+            if (timeElapsed < (lastTimeElapsed * SMOOTHNESS)) {
+                return timeElapsed;
             } else {
                 return 0.0;
             }
         } else {
-            return m_TimeElapsed;
+            return timeElapsed;
         }
     }
 }

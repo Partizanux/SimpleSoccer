@@ -31,18 +31,15 @@ import static common.misc.Cgdi.gdi;
 import static common.misc.WindowUtils.*;
 import static common.windows.*;
 
-public class Main {
-//--------------------------------- Globals ------------------------------
-//
-//------------------------------------------------------------------------
+public class Game {
+    private static String g_szApplicationName = "Simple Soccer";
+    private static SoccerPitch soccerPitch;
 
-    static String g_szApplicationName = "Simple Soccer";
-//static String	g_szWindowClassName = "MyWindowClass";
-    static SoccerPitch g_SoccerPitch;
-// bacause of game restart (g_SoccerPitch could be null for a while)
-    static Lock SoccerPitchLock = new ReentrantLock();
-//create a timer
-    static PrecisionTimer timer = new PrecisionTimer(Prm.FrameRate);
+    //TODO remove
+    // bacause of game restart (soccerPitch could be null for a while)
+    private static Lock SoccerPitchLock = new ReentrantLock();
+
+    private static PrecisionTimer timer = new PrecisionTimer(Prm.FrameRate);
 
 //used when a user clicks on a menu item to ensure the option is 'checked'
 //correctly
@@ -136,9 +133,9 @@ public class Main {
                 gdi.StartDrawing(hdcBackBuffer);
                 //fill our backbuffer with white
                 gdi.fillRect(Color.WHITE, 0, 0, WindowWidth, WindowHeight);
-                SoccerPitchLock.lock();
-                g_SoccerPitch.Render();
-                SoccerPitchLock.unlock();
+                //SoccerPitchLock.lock();
+                soccerPitch.render();
+                //SoccerPitchLock.unlock();
                 gdi.StopDrawing(hdcBackBuffer);
                 g.drawImage(buffer, 0, 0, null);
             }
@@ -156,6 +153,8 @@ public class Main {
         //these hold the dimensions of the client window area
         cxClient = buffer.getWidth();
         cyClient = buffer.getHeight();
+        soccerPitch = new SoccerPitch(cxClient, cyClient);
+
         //seed random number generator
         Utils.setSeed(0);
 
@@ -170,15 +169,12 @@ public class Main {
         Script1.MyMenuBar menu = Script1.createMenu(IDR_MENU1);
         window.setJMenuBar(menu);
 
-        g_SoccerPitch = new SoccerPitch(cxClient, cyClient);
-
         CheckAllMenuItemsAppropriately(menu);
 
         createPanel();
 
         window.add(panel);
         window.pack();
-
         window.addKeyListener(new KeyAdapter() {
             @Override
             public void keyReleased(KeyEvent e) {
@@ -191,8 +187,8 @@ public class Main {
                     case 'r':
                     case 'R': {
                         SoccerPitchLock.lock();
-                        g_SoccerPitch = null;
-                        g_SoccerPitch = new SoccerPitch(cxClient, cyClient);
+                        soccerPitch = null;
+                        soccerPitch = new SoccerPitch(cxClient, cyClient);
                         JMenuBar bar = Script1.createMenu(IDR_MENU1);
                         window.setJMenuBar(bar);
                         bar.revalidate();
@@ -202,7 +198,7 @@ public class Main {
 
                     case 'p':
                     case 'P': {
-                        g_SoccerPitch.togglePause();
+                        soccerPitch.togglePause();
                     }
                     break;
 
@@ -214,7 +210,6 @@ public class Main {
                 CppToJava.keyCache.pressed(e);
             }
         });
-
         window.addComponentListener(new ComponentAdapter() {
             @Override //has the user resized the client area?
             public void componentResized(ComponentEvent e) {
@@ -222,37 +217,34 @@ public class Main {
                 //we do using cx and cy is scaled accordingly
                 cxClient = e.getComponent().getBounds().width;
                 cyClient = e.getComponent().getBounds().height;
-                //now to resize the backbuffer accordingly. 
+                //now to resize the backbuffer accordingly.
                 buffer = new BufferedImage(cxClient, cyClient, BufferedImage.TYPE_INT_RGB);
                 hdcBackBuffer = buffer.createGraphics();
             }
         });
-
-        //make the window visible
         window.setVisible(true);
 
-        //timer.SmoothUpdatesOn();
+        //timer.smoothUpdatesOn();
 
-        //start the timer
-        timer.Start();
+        timer.start();
 
-        //TODO rework !!!
+        long startPoint = System.nanoTime();
+        long endPoint;
+        long counter = 0;
+
         while (true) {
-            //update
-            if (timer.ReadyForNextFrame()) {
-                SoccerPitchLock.lock();
-                g_SoccerPitch.Update();
-                SoccerPitchLock.unlock();
-                //render
-                //panel.revalidate();
+            if (timer.readyForNextFrame()) {
+                soccerPitch.update();
                 panel.repaint();
 
-                try {
-                    //System.out.println(timer.TimeElapsed());
-                    Thread.sleep(2);
-                } catch (InterruptedException ex) {
+                counter++;
+                endPoint = System.nanoTime();
+                if (endPoint - startPoint > 1000000000L) {
+                    System.out.println(counter);
+                    counter = 0;
+                    startPoint = endPoint;
                 }
             }
-        }//end while
+        }
     }
 }

@@ -118,7 +118,7 @@ public class SoccerPitch {
      *  this demo works on a fixed frame rate (60 by default) so we don't need
      *  to pass a time_elapsed as a parameter to the game entities
      */
-    public void Update() {
+    public void update() {
         if (paused) {
             return;
         }
@@ -143,7 +143,7 @@ public class SoccerPitch {
         }
     }
 
-    public boolean Render() {
+    public boolean render() {
         //draw the grass
         gdi.DarkGreenPen();
         gdi.DarkGreenBrush();

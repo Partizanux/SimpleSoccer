@@ -26,7 +26,7 @@ public class Script1 {
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     MyMenuItem source = (MyMenuItem) e.getSource();
-                    Main.HandleMenuItems(source.getID(), MyMenuBar.this);
+                    Game.HandleMenuItems(source.getID(), MyMenuBar.this);
                 }
             };
         }
