@@ -81,8 +81,6 @@ public class FieldPlayer extends PlayerBase {
         //and recreate side
         side = heading.Perp();
 
-        /*if (this.team.color() == SoccerTeam.Color.RED)
-            System.out.println(steeringBehaviors.force().Length());*/
         //now to calculate the acceleration due to the force exerted by
         //the forward component of the steering force in the direction
         //of the player's heading
@@ -90,8 +88,10 @@ public class FieldPlayer extends PlayerBase {
 
         velocity.add(accel);
 
+
         //make sure player does not exceed maximum velocity
         velocity.Truncate(maxSpeed);
+
         //update the position
         pos.add(velocity);
 
