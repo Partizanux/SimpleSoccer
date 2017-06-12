@@ -85,10 +85,7 @@ public class SteeringBehaviors {
      * direction
      */
     private Vector2D seek(Vector2D target) {
-
-        Vector2D DesiredVelocity = Vec2DNormalize(mul(sub(target, player.pos()),
-                player.maxSpeed()));
-
+        Vector2D DesiredVelocity = mul(sub(target, player.pos()), player.maxSpeed());
         return (sub(DesiredVelocity, player.velocity()));
     }
 
